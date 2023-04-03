@@ -15,8 +15,7 @@ jobs:
         tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz
         export PATH=$PATH:/usr/local/go/bin
     - name: download go modules
-    - run: |
-        go mod tidy
+    - run: go mod tidy
     - name: osx build
     - run: GOOS=darwin GOARCH=amd64 go build -o nfsclient-osx-amd64 nfsclient.go
     - name: windows64 build
