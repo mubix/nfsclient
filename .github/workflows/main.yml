@@ -6,48 +6,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3.5.0
+    - name: make-bins-directory
+    - run: mkdir ./bins
+    - name: prep-go-environment
+    - run: |
+        wget https://go.dev/dl/go1.20.2.linux-amd64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
+    - name: download go modules
+    - run: |
+        go mod tidy
     - name: osx build
-      uses: shoukoo/golang-pipeline/go1.19/release@master
-      if: github.event.action == 'published'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GOOS: darwin
-        GOARCH: amd64
-    - name: windows build
-      uses: shoukoo/golang-pipeline/go1.19/release@master
-      if: github.event.action == 'published'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GOOS: windows
-        GOARCH: amd64
-    - name: linux build
-      uses: shoukoo/golang-pipeline/go1.19/release@master
-      if: github.event.action == 'published'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GOOS: linux
-        GOARCH: amd64
-  publish:
-    name: Publish for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            artifact_name: nfsclient
-            asset_name: nfsclient-linux-amd64
-          - os: windows-latest
-            artifact_name: nfsclient.exe
-            asset_name: nfsclient-windows-amd64
-          - os: macos-latest
-            artifact_name: nfsclient
-            asset_name: nfsclient-macos-amd64
-    steps:
-    - uses: actions/checkout@v3
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ matrix.artifact_name }}
-        asset_name: ${{ matrix.asset_name }}
-        tag: ${{ github.ref }}
+    - run: GOOS=darwin GOARCH=amd64 go build -o nfsclient-osx-amd64 nfsclient.go
+    - name: windows64 build
+    - run: GOOS=windows GOARCH=amd64 go build -o nfsclient-windows-amd64.exe nfsclient.go
+    - name: windows86 build
+    - run: GOOS=windows GOARCH=x86 go build -o nfsclient-windows-x86.exe nfsclient.go
+    - name: linux64 build
+    - run: GOOS=linux GOARCH=amd64 go build -o nfsclient-linux-amd64 nfsclient.go
+    - name: linuxarm
+    - run: GOOS=linux GOARCH=arm64 go build -o nfsclient-linux-arm64 nfsclient.go
