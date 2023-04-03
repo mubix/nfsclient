@@ -1,4 +1,4 @@
-module nfsclient
+module nfsclient.go
 
 go 1.17
 
