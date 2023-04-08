@@ -1,5 +1,5 @@
 name: "Go Build Release"
-on: release
+on: push
 jobs:
   build:
     name: Build Go
@@ -27,7 +27,7 @@ jobs:
       run: GOOS=windows GOARCH=amd64 go build -o nfsclient-windows-amd64.exe nfsclient.go
     - name: Windows x86 Build
       shell: bash
-      run: GOOS=windows GOARCH=x86 go build -o nfsclient-windows-x86.exe nfsclient.go
+      run: GOOS=windows GOARCH=386 go build -o nfsclient-windows-x86.exe nfsclient.go
     - name: Linux x64 Build
       shell: bash
       run: GOOS=linux GOARCH=amd64 go build -o nfsclient-linux-amd64 nfsclient.go
