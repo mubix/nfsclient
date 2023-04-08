@@ -37,4 +37,17 @@ jobs:
     - name: Show Directory
       shell: bash
       run: find .
-  
+    - name: Create Release
+      id: create_release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        title: Release ${{ github.sha }}
+        files: |
+          ./nfsclient-windows-amd64.exe
+          ./nfsclient-linux-arm64
+          ./nfsclient-linux-amd64
+          ./nfsclient-windows-x86.exe
+          ./nfsclient-osx-amd64
+        prerelease: false
