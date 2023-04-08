@@ -1,28 +1,40 @@
+name: "Go Build Release"
 on: release
-name: Build on release
 jobs:
   build:
     name: Build Go
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3.5.0
-    - name: make-bins-directory
-    - run: mkdir ./bins
-    - name: prep-go-environment
-    - run: |
+    - name: Make BINS Directory
+      shell: bash
+      run: mkdir ./bins
+    - name: Prep the Go Environment
+      shell: bash
+      run: |
         wget https://go.dev/dl/go1.20.2.linux-amd64.tar.gz
         rm -rf /usr/local/go
         tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz
         export PATH=$PATH:/usr/local/go/bin
-    - name: download go modules
-    - run: go mod tidy
-    - name: osx build
-    - run: GOOS=darwin GOARCH=amd64 go build -o nfsclient-osx-amd64 nfsclient.go
-    - name: windows64 build
-    - run: GOOS=windows GOARCH=amd64 go build -o nfsclient-windows-amd64.exe nfsclient.go
-    - name: windows86 build
-    - run: GOOS=windows GOARCH=x86 go build -o nfsclient-windows-x86.exe nfsclient.go
-    - name: linux64 build
-    - run: GOOS=linux GOARCH=amd64 go build -o nfsclient-linux-amd64 nfsclient.go
-    - name: linuxarm
-    - run: GOOS=linux GOARCH=arm64 go build -o nfsclient-linux-arm64 nfsclient.go
+    - name: Download Go Modules
+      shell: bash
+      run: go mod tidy
+    - name: OSX Build
+      shell: bash
+      run: GOOS=darwin GOARCH=amd64 go build -o nfsclient-osx-amd64 nfsclient.go
+    - name: Windows x64 Build
+      shell: bash
+      run: GOOS=windows GOARCH=amd64 go build -o nfsclient-windows-amd64.exe nfsclient.go
+    - name: Windows x86 Build
+      shell: bash
+      run: GOOS=windows GOARCH=x86 go build -o nfsclient-windows-x86.exe nfsclient.go
+    - name: Linux x64 Build
+      shell: bash
+      run: GOOS=linux GOARCH=amd64 go build -o nfsclient-linux-amd64 nfsclient.go
+    - name: Linux ARM Build
+      shell: bash
+      run: GOOS=linux GOARCH=arm64 go build -o nfsclient-linux-arm64 nfsclient.go
+    - name: Show Directory
+      shell: bash
+      run: find .
+  
