@@ -21,19 +21,19 @@ jobs:
       run: go mod tidy
     - name: OSX Build
       shell: bash
-      run: GOOS=darwin GOARCH=amd64 go build -o nfsclient-osx-amd64 nfsclient.go
+      run: GOOS=darwin GOARCH=amd64 go build -ldflags="-extldflags=-static -s -w" -o nfsclient-osx-amd64 nfsclient.go
     - name: Windows x64 Build
       shell: bash
-      run: GOOS=windows GOARCH=amd64 go build -o nfsclient-windows-amd64.exe nfsclient.go
+      run: GOOS=windows GOARCH=amd64 go build -ldflags="-extldflags=-static -s -w" -o nfsclient-windows-amd64.exe nfsclient.go
     - name: Windows x86 Build
       shell: bash
-      run: GOOS=windows GOARCH=386 go build -o nfsclient-windows-x86.exe nfsclient.go
+      run: GOOS=windows GOARCH=386 go build -ldflags="-extldflags=-static -s -w" -o nfsclient-windows-x86.exe nfsclient.go
     - name: Linux x64 Build
       shell: bash
-      run: GOOS=linux GOARCH=amd64 go build -o nfsclient-linux-amd64 nfsclient.go
+      run: GOOS=linux GOARCH=amd64 go build -ldflags="-extldflags=-static -s -w" -o nfsclient-linux-amd64 nfsclient.go
     - name: Linux ARM Build
       shell: bash
-      run: GOOS=linux GOARCH=arm64 go build -o nfsclient-linux-arm64 nfsclient.go
+      run: GOOS=linux GOARCH=arm64 go build -ldflags="-extldflags=-static -s -w" -o nfsclient-linux-arm64 nfsclient.go
     - name: Show Directory
       shell: bash
       run: find .
